@@ -1,0 +1,19 @@
+version: "3"
+services:
+  #  exlplorer:
+  #  container_name: storage_explorer
+  #  image: "sebagomez/azurestorageexplorer"
+  #  ports:
+  #    - "5555:80"
+  storage:
+    container_name: azure_storage
+    image: "mcr.microsoft.com/azure-storage/azurite"
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+      - "10003:10003"
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
