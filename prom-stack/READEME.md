@@ -1,9 +1,10 @@
 # Prom stack
 
-`docker-compose -f docker-compose.yaml up`
-
-Grafana: localhost:3000
-Prometheus: localhost:9090
+```bash
+docker-compose up
+``` 
+Grafana: [http://localhost:3000](http://localhost:3000)
+Prometheus: [localhost:9090](localhost:9090)
 
 ``` bash
 ├── READEME.md
@@ -19,4 +20,20 @@ Prometheus: localhost:9090
 └── prometheus
     ├── alert.rules
     └── prometheus.yml
+```
+
+##  Add custom job to be scrape
+
+```bash
+vi prometheus/prometheus.yml
+
+...
+
+  - job_name: 'myserver'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['localhost:9000']
+...
 ```

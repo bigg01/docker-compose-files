@@ -1,0 +1,40 @@
+version: '3.7'
+
+volumes:
+  prometheus_data: {}
+  grafana_data: {}
+
+#networks:
+#  default:
+#    driver: bridge
+
+services:
+
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    volumes:
+      - ./prometheus/:/etc/prometheus/:z
+      - prometheus_data:/prometheus:z
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    ports:
+      - 9090:9090
+    restart: always
+
+
+  grafana:
+    image: grafana/grafana:10.0.1
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/datasources
+    env_file:
+      - ./grafana/config.monitoring
+
+
